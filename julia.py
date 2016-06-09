@@ -14,7 +14,8 @@ def makegrid(lim, width):
 
 def calculate_z(zs, c, maxiter):
     """
-    Simplistic Python implementation of the Julia fractal computation. This is NOT a good implementation, but it is easy to understand.
+    Simplistic Python implementation of the Julia fractal computation.
+    This is NOT a good implementation, but it is easy to understand.
     """
 
     zdim = zs.shape[0]
@@ -33,7 +34,9 @@ def calculate_z(zs, c, maxiter):
 
 # def calculate_z(zs, c, maxiter):
 #     """
-#     This is a superior implementation of the Julia fractal computation using numpy. This is a reference for the performance of our cythonised code.
+#     This is a superior implementation of the Julia fractal computation
+#     using numpy. This is a reference for the performance of our cythonised
+#     code.
 #     """
 #
 #     mask = maxiter*np.ones(zs.shape, dtype=np.int32)
@@ -47,6 +50,9 @@ def calculate_z(zs, c, maxiter):
 grid_size = 1024
 
 zs = makegrid(2, grid_size)
+
+# First res calculation is for functions in this file. Uncomment the second
+# and third lines to use the Cython code.
 
 t0 = time.time()
 res = calculate_z(zs, -0.62772-0.42193j, 100)
