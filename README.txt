@@ -12,3 +12,6 @@ gcc (4.8.4)
 
 NOTE: These were the versions on my laptop, but others will likely work too.
 I would recommend pip installing what you do not already have.
+
+I would also recommend you take a look at High Performance Python by O'Reilly
+Press. It is available online and acknowledge my blatant theft of their example.
