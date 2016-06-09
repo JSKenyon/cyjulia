@@ -5,8 +5,8 @@ cimport numpy as np
 
 def calculate_z(zs, c, maxiter):
 	"""
-	This is identical to the first example in julia.py. It is here to
-    demonstrate that it is possible to compile ordinary Python code.
+	This is identical to the first example in julia.py. It is here to 
+	demonstrate that it is possible to compile ordinary Python code.
 	"""
 
 	zdim = zs.shape[0]
