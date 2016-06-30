@@ -2,6 +2,17 @@ import numpy as np
 import time
 import julia_core
 import matplotlib.pyplot as plt
+from functools import wraps
+
+def timefn(fn):
+    @wraps(fn)
+    def measure_time(*args, **kwargs):
+        t1 = time.time()
+        result = fn(*args, **kwargs)
+        t2 = time.time()
+        print ("@timefn:" + fn.func_name + " took " + str(t2 - t1) + " seconds")
+        return result
+    return measure_time
 
 def makegrid(lim, width):
 	"""
@@ -12,6 +23,8 @@ def makegrid(lim, width):
 	zs = zs - 1j*zs[np.newaxis,:].T
 	return zs
 
+# @timefn
+# @profile
 def calculate_z(zs, c, maxiter):
     """
     Simplistic Python implementation of the Julia fractal computation.
@@ -47,18 +60,34 @@ def calculate_z(zs, c, maxiter):
 #
 #     return mask
 
-grid_size = 1024
+def julia_fract():
 
-zs = makegrid(2, grid_size)
+    grid_size = 512
 
-# First res calculation is for functions in this file. Uncomment the second
-# and third lines to use the Cython code.
+    zs = makegrid(2, grid_size)
 
-t0 = time.time()
-res = calculate_z(zs, -0.62772-0.42193j, 100)
-# res = julia_core.calculate_z(zs.ravel(), -0.62772-0.42193j, 100)
-# res = np.array(res).reshape(grid_size,grid_size)
-print "Time taken to compute fractal: {} seconds".format(time.time() - t0)
+    # First res calculation is for functions in this file. Uncomment the second
+    # and third lines to use the Cython code.
 
-plt.imshow(np.abs(res))
-plt.show()
+    # t0 = time.time()
+    res = calculate_z(zs, -0.62772-0.42193j, 100)
+    # res = julia_core.calculate_z(zs.ravel(), -0.62772-0.42193j, 100)
+    # res = np.array(res).reshape(grid_size,grid_size)
+    # print "Time taken to compute fractal: {} seconds".format(time.time() - t0)
+
+    # plt.imshow(np.abs(res))
+    # plt.show()
+
+if __name__=="__main__":
+    julia_fract()
+
+# python -m timeit -n 5 -r 1 "import julia" "julia.julia_fract()"
+# /usr/bin/time --verbose python julia.py
+# python -m cProfile -s cumulative julia.py
+# python -m cProfile -o profile.stats julia.py
+# runsnake profile.stats
+# python //usr/local/lib/python2.7/dist-packages/kernprof.py -l -v julia.py
+# python -m memory_profiler julia.py
+# perf stat -e cycles,stalled-cycles-frontend,stalled-cycles-backend,instructions,\
+# cache-references,cache-misses,branches,branch-misses,task-clock,faults,\
+# minor-faults,cs,migrations -r 3 python diffusion_python_memory.py
